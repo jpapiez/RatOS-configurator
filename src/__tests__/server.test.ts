@@ -570,6 +570,21 @@ describe('server', async () => {
 				expect(splitRes.filter((l) => l.includes('gear_ratio:')).length).toBe(5);
 			});
 		});
+		describe('can generate voron-trident config', async () => {
+			const voronTridentConfigPath = path.join(__dirname, 'fixtures', 'voron-trident-300.json');
+			const { splitRes, annotatedLines, config, files } = await loadConfig(voronTridentConfigPath);
+			const gcodeBlocks: number[] = [];
+			splitRes.forEach((l, i) => l.includes('gcode:') && gcodeBlocks.push(i));
+			test('produces valid config', async () => {
+				expectValidConfig(config, splitRes, annotatedLines);
+				// Expect rotationDistance to be set for z1, z2, z3
+				expect(config.rails.find((r) => r.axis === PrinterAxis.z)?.rotationDistance).toEqual('4');
+				expect(config.rails.find((r) => r.axis === PrinterAxis.z1)?.rotationDistance).toEqual('4');
+				expect(config.rails.find((r) => r.axis === PrinterAxis.z2)?.rotationDistance).toEqual('4');
+				// Expect gear_ratio to be present in splitRes<?>
+				// expect(splitRes.filter((l) => l.includes('gear_ratio:')).length).toBe(5);
+			});
+		});
 	});
 	describe('printer defaults', async () => {
 		const printers = await getPrinters();
