@@ -219,4 +219,50 @@ export const Steppers = z.array(Stepper).parse([
 		title: 'LDO-35STH48-1684AH',
 		maxPeakCurrent: 1.68,
 	},
+	{
+		id: 'LD0-42STH40-1684CL350ET',
+		title: 'LD0-42STH40-1684CL350ET',
+		maxPeakCurrent: 1.68,
+		presets: [
+			{
+				voltage: 24,
+				driver: 'TMC2209',
+				sense_resistor: 0.11,
+				run_current: 0.6,
+				driver_TBL: 0,
+				driver_HEND: 6,
+				driver_HSTRT: 7,
+				driver_TOFF: 4,
+			},
+			{
+				voltage: 24,
+				driver: 'TMC2209',
+				sense_resistor: 0.11,
+				run_current: 1.3,
+				driver_TBL: 0,
+				driver_HEND: 6,
+				driver_HSTRT: 7,
+				driver_TOFF: 4,
+			},
+		],
+	},
+	{
+		id: 'LD0-42STH40-1684CL300ET',
+		title: 'LD0-42STH40-1684CL300ET',
+		maxPeakCurrent: 1.68,
+		presets: [
+			{
+				voltage: 24,
+				driver: 'TMC2209',
+				sense_resistor: 0.11,
+				run_current: 0.6,
+			},
+			{
+				voltage: 24,
+				driver: 'TMC2209',
+				sense_resistor: 0.11,
+				run_current: 1.3,
+			},
+		],
+	},
 ] satisfies z.input<typeof Stepper>[]);
