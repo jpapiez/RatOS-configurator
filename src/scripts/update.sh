@@ -27,11 +27,6 @@ maybe_truncate_log
 ensure_pnpm_installation
 ensure_service_permission
 ensure_sudo_command_whitelisting
-install_hooks
-update_package_managers
-pnpm_install
-install_cli
-install_udev_rule
-patch_log_rotation
-symlink_configuration
-install_or_update_service_file
+refresh_yarn_gpg_key
+ensure_service_permission
+yarn_install
