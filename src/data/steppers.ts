@@ -315,6 +315,11 @@ export const Steppers = z.array(Stepper).parse([
 		maxPeakCurrent: 1.0,
 	},
 	{
+		id: 'LDO-42STH25-1004CL200ET',
+		title: 'LDO-42STH25-1004CL200ET',
+		maxPeakCurrent: 1.0,
+	},
+	{
 		id: 'LDO-36STH20-1004AHG',
 		title: 'LDO-36STH20-1004AHG',
 		maxPeakCurrent: 1.0,
@@ -350,6 +355,11 @@ export const Steppers = z.array(Stepper).parse([
 		id: 'LDO-35STH48-1684AH',
 		title: 'LDO-35STH48-1684AH',
 		maxPeakCurrent: 1.68,
+	},
+	{
+		id: 'LDO-35STH52-2004AH',
+		title: 'LDO-35STH52-2004AH',
+		maxPeakCurrent: 2.0,
 	},
 	{
 		id: 'LDO-42STH40-1684CL350ET',
