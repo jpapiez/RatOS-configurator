@@ -6,7 +6,7 @@
 	"documentationLink": "https://os.ratrig.com/docs/printers/v-trident",
 	"image": "voron-trident.png",
 	"template": "voron-trident-printer.template.cfg",
-	"driverCountRequired": 7,
+	"driverCountRequired": 6,
 	"sizes": {
 		"250": {
 			"x": 250,
