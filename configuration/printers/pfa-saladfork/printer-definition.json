@@ -6,7 +6,7 @@
 	"documentationLink": "https://os.ratrig.com/docs/printers/pfa-saladfork",
 	"image": "pfa-saladfork.png",
 	"template": "pfa-saladfork-printer.template.cfg",
-	"driverCountRequired": 7,
+	"driverCountRequired": 6,
 	"sizes": {
 		"120": {
 			"x": 120,
