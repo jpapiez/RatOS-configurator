@@ -1,5 +1,5 @@
 # .github/workflows/publish.yml
-name: Publish to v2.1.x-deployment
+name: Publish to v2.1.x-deployment-2
 on:
   workflow_run:
     workflows: ["CI"] # runs after CI workflow
@@ -24,7 +24,7 @@ jobs:
         id: variables
         shell: bash
         run: |
-          echo "target-branch=v2.1.x-deployment" >> "$GITHUB_OUTPUT"
+          echo "target-branch=v2.1.x-deployment-2" >> "$GITHUB_OUTPUT"
           echo "src-branch=v2.1.x" >> "$GITHUB_OUTPUT"
 
       - uses: actions/checkout@v3
@@ -36,18 +36,18 @@ jobs:
 
       - name: Get last successful commit
         id: last-successful-commit
-        uses: tylermilner/last-successful-commit-hash-action@v1
+        uses: nickderobertis/last-successful-commit-action@v1
         with:
-          workflow-id: 99826346
+          workflow-id: publish-v2.1.x.yml
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          branch: development # This has to be the main branch of repository since all workflows are run from there
+          branch: ${{ steps.variables.outputs.src-branch }}
 
       - name: Get commit count
         id: commit-count
         shell: bash
         run: |
-          echo "Deploying $(git rev-list --count ${{ steps.last-successful-commit.outputs.commit-hash }}..${{ github.sha }})) commits!"
-          echo "commit-count=$(git rev-list --count ${{ steps.last-successful-commit.outputs.commit-hash }}..${{ github.sha }})" >> "$GITHUB_OUTPUT"
+          echo "Deploying $(git rev-list --count ${{ steps.last-successful-commit.outputs.commit-sha }}..${{ github.sha }}) commits!"
+          echo "commit-count=$(git rev-list --count ${{ steps.last-successful-commit.outputs.commit-sha }}..${{ github.sha }})" >> "$GITHUB_OUTPUT"
 
       - uses: actions/setup-node@v3
         with:
@@ -107,11 +107,16 @@ jobs:
 
       - name: Delete files not needed in deployment
         working-directory: ./src
-        run: rm -rf __tests__ app pages components coverage data helpers hooks moonraker env recoil server utils zods test-setup.ts vitest.config.mts tsconfig.vitest.json copy-files-from-to.json components.json postcss.config.js prettier.config.mjs tailwind.config.ts
+        run: rm -rf __tests__ app pages components coverage data helpers hooks moonraker env recoil server utils zods test-setup.ts test-setup-global.ts vitest.config.mts tsconfig.vitest.json copy-files-from-to.json components.json postcss.config.js prettier.config.mjs tailwind.config.ts
 
       - name: Rename src/ to app/
         working-directory: ./
         run: mv src app
+
+      - name: Modify .env file to fix paths pointing to src/
+        working-directory: ./app
+        run: |
+          sed -i 's|/src/scripts|/app/scripts|g' .env
 
       - name: Publish to ${{ steps.variables.outputs.target-branch }}
         uses: JamesIves/github-pages-deploy-action@v4
@@ -120,7 +125,7 @@ jobs:
           commit-message: |
             Deployed ${{ steps.commit-count.outputs.commit-count }} commit${{ steps.commit-count.outputs.commit-count > 1 && 's' || '' }}.
             
-            https://github.com/Rat-OS/RatOS-configurator/compare/${{ steps.last-successful-commit.outputs.commit-hash }}...${{ github.sha }}
-          git-config-name: Mikkel Schmidt
-          git-config-email: mikkel.schmidt@gmail.com
+            https://github.com/Rat-OS/RatOS-configurator/compare/${{ steps.last-successful-commit.outputs.commit-sha }}...${{ github.sha }}
+          git-config-name: github-actions[bot]
+          git-config-email: 41898282+github-actions[bot]@users.noreply.github.com
           branch: ${{ steps.variables.outputs.target-branch }} # The branch name where you want to push the assets

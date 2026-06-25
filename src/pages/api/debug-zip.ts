@@ -25,7 +25,6 @@ export const getDebugZipFiles = async () => {
 		`${environment.KLIPPER_CONFIG_PATH}/../logs/*.${extensions}`,
 		`${environment.LOG_FILE}`,
 		'/var/log/kern.+(log|log.1)',
-		`${environment.RATOS_DATA_DIR}/logs/ratos-update.log*`,
 	]);
 	logs = logs.filter((file, index) => logs.indexOf(file) === index);
 
@@ -41,7 +40,9 @@ export const getDebugZipFiles = async () => {
 
 	configs = configs.filter((file, index) => configs.indexOf(file) === index);
 
-	let vars = await glob([`/var/log/ratos-configurator.log`]);
+	let vars = await glob([`/var/log/ratos*.log`]);
+
+	let temps = await glob([`/tmp/heat_soak_*.csv`]);
 
 	const gatherInfo = async (f: string, source: string, dest: string) => {
 		let s = await stat(f);
@@ -67,7 +68,8 @@ export const getDebugZipFiles = async () => {
 				.map((f) => gatherInfo(f, 'RatOS', 'RatOS'))
 				.concat(logs.map((f) => gatherInfo(f, 'logs', 'logs')))
 				.concat(configs.map((f) => gatherInfo(f, 'configs', 'configs')))
-				.concat(vars.map((f) => gatherInfo(f, 'var/log', 'var/log'))),
+				.concat(vars.map((f) => gatherInfo(f, 'var/log', 'var/log')))
+				.concat(temps.map((f) => gatherInfo(f, 'tmp', 'tmp'))),
 		)
 	).filter((f) => f.isFile);
 	return files;

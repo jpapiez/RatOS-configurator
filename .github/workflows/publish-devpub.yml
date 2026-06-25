@@ -129,7 +129,7 @@ jobs:
 
       - name: Delete files not needed in deployment
         working-directory: ./src
-        run: rm -rf __tests__ app pages components coverage data helpers hooks moonraker env recoil server utils zods test-setup.ts vitest.config.mts tsconfig.vitest.json copy-files-from-to.json components.json postcss.config.js prettier.config.mjs tailwind.config.ts
+        run: rm -rf __tests__ app pages components coverage data helpers hooks moonraker env recoil server utils zods test-setup.ts test-setup-global.ts vitest.config.mts tsconfig.vitest.json copy-files-from-to.json components.json postcss.config.js prettier.config.mjs tailwind.config.ts
 
       - name: Rename src/ to app/
         working-directory: ./
@@ -146,13 +146,8 @@ jobs:
       - name: Set Git Config for Deployment
         id: git-config-for-deployment
         run: |
-          if [[ "${{ github.repository_owner }}" == "Rat-OS" ]]; then
-            echo "git-config-name=Mikkel Schmidt" >> $GITHUB_OUTPUT
-            echo "git-config-email=mikkel.schmidt@gmail.com" >> $GITHUB_OUTPUT
-          else
-            echo "git-config-name=${{ github.actor }}" >> $GITHUB_OUTPUT
-            echo "git-config-email=${{ github.actor }}@users.noreply.github.com" >> $GITHUB_OUTPUT
-          fi
+          echo "git-config-name=github-actions[bot]" >> $GITHUB_OUTPUT
+          echo "git-config-email=41898282+github-actions[bot]@users.noreply.github.com" >> $GITHUB_OUTPUT
 
       - name: Generate Commit Message
         id: generate-commit-message
