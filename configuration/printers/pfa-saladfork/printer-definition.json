@@ -2,7 +2,7 @@
 	"$schema": "../printer-definition.schema.json",
 	"name": "SaladFork",
 	"description": "CoreXY printer with a fixed gantry from Printers for Ants, which comes in 3 sizes",
-	"manufacturer": "Prints for Ants",
+	"manufacturer": "Printers for Ants",
 	"documentationLink": "https://os.ratrig.com/docs/printers/pfa-saladfork",
 	"image": "pfa-saladfork.png",
 	"template": "pfa-saladfork-printer.template.cfg",
@@ -85,9 +85,6 @@
 				"axis": "z",
 				"axisDescription": "The Z motor located on the front left of the bottom of the printer",
 				"current": 0.6,
-				"performanceMode": {
-					"current": 1.3
-				},
 				"driver": "BTT-TMC2209-13",
 				"stepper": "LDO-42STH25-1004CL200ET",
 				"rotationDistance": 8
@@ -96,9 +93,6 @@
 				"axis": "z1",
 				"axisDescription": "The Z motor located on the rear center of the bottom of the printer",
 				"current": 0.6,
-				"performanceMode": {
-					"current": 1.3
-				},
 				"driver": "BTT-TMC2209-13",
 				"stepper": "LDO-42STH25-1004CL200ET",
 				"rotationDistance": 8
@@ -107,9 +101,6 @@
 				"axis": "z2",
 				"axisDescription": "The Z motor located on the front right of the bottom of the printer",
 				"current": 0.6,
-				"performanceMode": {
-					"current": 1.3
-				},
 				"driver": "BTT-TMC2209-13",
 				"stepper": "LDO-42STH25-1004CL200ET",
 				"rotationDistance": 8

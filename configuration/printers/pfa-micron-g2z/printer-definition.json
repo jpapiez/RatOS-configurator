@@ -1,7 +1,7 @@
 {
 	"$schema": "../printer-definition.schema.json",
-	"name": "Micron",
-	"description": "180 mm CoreXY printer with a flying gantry from Printers for Ants",
+	"name": "Micron (G2Z)",
+	"description": "180 mm CoreXY printer with a flying gantry and Galileo 2 Z drives",
 	"manufacturer": "Printers for Ants",
 	"documentationLink": "https://os.ratrig.com/docs/printers/pfa-micron",
 	"image": "pfa-micron.png",
@@ -73,51 +73,39 @@
 			},
 			{
 				"axis": "z",
-				"axisDescription": "The Z motor located on the front left of the bottom of the printer",
+				"axisDescription": "The G2Z drive located on the front left of the bottom of the printer",
 				"current": 0.8,
-				"performanceMode": {
-					"current": 1
-				},
 				"driver": "BTT-TMC2209-13",
-				"stepper": "LDO-42STH40-1684AC",
-				"rotationDistance": 32,
-				"gearRatio": "64:16"
+				"stepper": "LDO-G2Z-9T",
+				"rotationDistance": 40,
+				"gearRatio": "9:1"
 			},
 			{
 				"axis": "z1",
-				"axisDescription": "The Z motor located on the rear left of the bottom of the printer",
+				"axisDescription": "The G2Z drive located on the rear left of the bottom of the printer",
 				"current": 0.8,
-				"performanceMode": {
-					"current": 1
-				},
 				"driver": "BTT-TMC2209-13",
-				"stepper": "LDO-42STH40-1684AC",
-				"rotationDistance": 32,
-				"gearRatio": "64:16"
+				"stepper": "LDO-G2Z-9T",
+				"rotationDistance": 40,
+				"gearRatio": "9:1"
 			},
 			{
 				"axis": "z2",
-				"axisDescription": "The Z motor located on the rear right of the bottom of the printer",
+				"axisDescription": "The G2Z drive located on the rear right of the bottom of the printer",
 				"current": 0.8,
-				"performanceMode": {
-					"current": 1
-				},
 				"driver": "BTT-TMC2209-13",
-				"stepper": "LDO-42STH40-1684AC",
-				"rotationDistance": 32,
-				"gearRatio": "64:16"
+				"stepper": "LDO-G2Z-9T",
+				"rotationDistance": 40,
+				"gearRatio": "9:1"
 			},
 			{
 				"axis": "z3",
-				"axisDescription": "The Z motor located on the front right of the bottom of the printer",
+				"axisDescription": "The G2Z drive located on the front right of the bottom of the printer",
 				"current": 0.8,
-				"performanceMode": {
-					"current": 1
-				},
 				"driver": "BTT-TMC2209-13",
-				"stepper": "LDO-42STH40-1684AC",
-				"rotationDistance": 32,
-				"gearRatio": "64:16"
+				"stepper": "LDO-G2Z-9T",
+				"rotationDistance": 40,
+				"gearRatio": "9:1"
 			},
 			{
 				"axis": "extruder",

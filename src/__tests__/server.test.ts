@@ -605,21 +605,74 @@ describe('server', async () => {
 				expect(splitRes.filter((l) => l.includes('gear_ratio:')).length).toBe(5);
 			});
 		});
-		describe('can generate voron-trident config', async () => {
-			const voronTridentConfigPath = path.join(__dirname, 'fixtures', 'voron-trident-300.json');
-			const { splitRes, annotatedLines, config, files } = await loadConfig(voronTridentConfigPath);
-			const gcodeBlocks: number[] = [];
-			splitRes.forEach((l, i) => l.includes('gcode:') && gcodeBlocks.push(i));
-			test('produces valid config', async () => {
-				expectValidConfig(config, splitRes, annotatedLines);
-				// Expect rotationDistance to be set for z1, z2, z3
-				expect(config.rails.find((r) => r.axis === PrinterAxis.z)?.rotationDistance).toEqual('4');
-				expect(config.rails.find((r) => r.axis === PrinterAxis.z1)?.rotationDistance).toEqual('4');
-				expect(config.rails.find((r) => r.axis === PrinterAxis.z2)?.rotationDistance).toEqual('4');
-				// Expect gear_ratio to be present in splitRes<?>
-				// expect(splitRes.filter((l) => l.includes('gear_ratio:')).length).toBe(5);
-			});
-		});
+		describe.each([
+			{
+				id: 'pfa-micron',
+				size: 180,
+				zAxisCount: 4,
+				rotationDistance: '32',
+				gearRatio: '64:16',
+				meshMaximum: 'mesh_max: 170,170',
+			},
+			{
+				id: 'pfa-micron-g2z',
+				size: 180,
+				zAxisCount: 4,
+				rotationDistance: '40',
+				gearRatio: '9:1',
+				meshMaximum: 'mesh_max: 170,170',
+			},
+			{
+				id: 'voron-trident',
+				size: '300x250',
+				sizeConfig: '300-250',
+				zAxisCount: 3,
+				rotationDistance: '4',
+				gearRatio: undefined,
+				meshMaximum: 'mesh_max: 260,260',
+			},
+			{
+				id: 'voron-trident',
+				size: 300,
+				sizeConfig: '300',
+				zAxisCount: 3,
+				rotationDistance: '4',
+				gearRatio: undefined,
+				meshMaximum: 'mesh_max: 260,260',
+			},
+		])(
+			'can generate $id $size config',
+			async ({ id, size, sizeConfig = size, zAxisCount, rotationDistance, gearRatio, meshMaximum }) => {
+				const printer = parsedPrinters.find((candidate) => candidate.id === id);
+				if (printer == null) {
+					throw new Error(`Missing printer definition for ${id}`);
+				}
+				const serialized = {
+					...serializedConfigFromDefaults(printer),
+					size,
+				};
+				const config = await deserializePrinterConfiguration(serialized);
+				const files = await getFilesToWrite(config);
+				const generated = files.map((file) => file.content).join('\n');
+				const zRails = config.rails.filter((rail) => rail.axis.startsWith('z'));
+				const printerDirectory = id.startsWith('pfa-micron') ? 'pfa-micron' : id;
+				const sizeConfigContent = await readFile(
+					path.join(process.env.RATOS_CONFIGURATION_PATH!, 'printers', printerDirectory, `${sizeConfig}.cfg`),
+					'utf8',
+				);
+
+				test('uses the expected motion configuration', () => {
+					expect(config.size).toEqual(printer.sizes[size.toString()]);
+					expect(zRails).toHaveLength(zAxisCount);
+					zRails.forEach((rail) => {
+						expect(rail.rotationDistance.toString()).toEqual(rotationDistance);
+						expect(rail.gearRatio).toEqual(gearRatio);
+					});
+					expect(generated).toContain(`[include RatOS/printers/${printerDirectory}/${sizeConfig}.cfg]`);
+					expect(sizeConfigContent).toContain(meshMaximum);
+				});
+			},
+		);
 	});
 	describe('printer defaults', async () => {
 		const printers = await getPrinters();

@@ -352,6 +352,23 @@ export const Steppers = z.array(Stepper).parse([
 		maxPeakCurrent: 1.0,
 	},
 	{
+		id: 'LDO-G2Z-9T',
+		title: 'LDO Galileo 2 Z Drive (G2Z)',
+		maxPeakCurrent: 1.0,
+		presets: [
+			{
+				voltage: 24,
+				driver: 'TMC2209',
+				sense_resistor: 0.11,
+				run_current: 0.8,
+				driver_TBL: 0,
+				driver_HEND: 6,
+				driver_HSTRT: 7,
+				driver_TOFF: 4,
+			},
+		],
+	},
+	{
 		id: 'LDO-35STH48-1684AH',
 		title: 'LDO-35STH48-1684AH',
 		maxPeakCurrent: 1.68,
